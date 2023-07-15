@@ -1,8 +1,8 @@
 package com.dylan.bonvoyage.notification.internal.service;
 
-import com.dylan.bonvoyage.notification.internal.port.NotificationDTO;
-import com.dylan.bonvoyage.notification.internal.model.NotificationType;
 import com.dylan.bonvoyage.notification.internal.model.Notification;
+import com.dylan.bonvoyage.notification.internal.model.NotificationType;
+import com.dylan.bonvoyage.notification.internal.port.NotificationDTO;
 import com.dylan.bonvoyage.notification.internal.port.NotificationServiceAPI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
