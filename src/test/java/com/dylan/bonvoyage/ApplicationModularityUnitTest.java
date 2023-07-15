@@ -5,7 +5,6 @@ import org.springframework.modulith.core.ApplicationModules;
 import org.springframework.modulith.docs.Documenter;
 
 class ApplicationModularityUnitTest {
-
     ApplicationModules modules = ApplicationModules.of(BonVoyageApplication.class);
 
     @Test
@@ -24,6 +23,4 @@ class ApplicationModularityUnitTest {
     void createApplicationModuleModel() {
         modules.forEach(System.out::println);
     }
-
-
 }
