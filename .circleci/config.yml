@@ -1,0 +1,47 @@
+version: 2.1
+
+orbs:
+  qodana: jetbrains/qodana@2023.1
+  docker: circleci/docker@2.1.2
+
+jobs:
+  code-quality:
+    machine:
+      image: 'ubuntu-2004:current'
+    steps:
+      - checkout
+      - qodana/scan
+
+  test:
+    docker:
+      - image: cimg/openjdk:17.0.7
+    steps:
+      - checkout
+      - run: |
+          mvn test
+
+  build-docker:
+    executor:
+      name: docker/docker
+      tag: "3.6"
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.11
+          docker_layer_caching: true
+      - run: |
+          DOCKERHUB_REPO=datnguyen293
+          DOCKER_IMAGE=bon-voyage
+
+          docker build -t $DOCKERHUB_REPO/$DOCKER_IMAGE:latest .
+
+workflows:
+  build-service:
+    jobs:
+      - code-quality:
+          context: bon-voyage-context
+      - test
+      - build-docker:
+          requires:
+            - code-quality
+            - test
