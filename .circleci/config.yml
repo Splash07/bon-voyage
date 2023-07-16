@@ -6,6 +6,26 @@ orbs:
   slack: circleci/slack@4.3.0
 
 commands:
+  trigger_slack_notification:
+    steps:
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "plain_text",
+                      "text": "*This is a text notification*",
+                      "emoji": true
+                    }
+                  ]
+                }
+              ]
+            }
+          event: always
+          
   notify_slack_error:
     steps:
       - slack/notify:
@@ -39,6 +59,7 @@ jobs:
       name: docker/docker
       tag: "3.6"
     steps:
+      - trigger_slack_notification
       - checkout
       - setup_remote_docker:
           version: 20.10.11
