@@ -3,6 +3,20 @@ version: 2.1
 orbs:
   qodana: jetbrains/qodana@2023.1
   docker: circleci/docker@2.1.2
+  slack: circleci/slack@4.3.0
+
+commands:
+  notify_slack_error:
+    steps:
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+
+  notify_slack_pass:
+    steps:
+      - slack/notify:
+          event: pass
+          template: basic_success_1
 
 jobs:
   code-quality:
@@ -34,6 +48,8 @@ jobs:
           DOCKER_IMAGE=bon-voyage
 
           docker build -t $DOCKERHUB_REPO/$DOCKER_IMAGE:latest .
+      - notify_slack_error
+      - notify_slack_pass
 
 workflows:
   build-service:
@@ -42,6 +58,7 @@ workflows:
           context: bon-voyage-context
       - test
       - build-docker:
+          context: slack-notification
           requires:
             - code-quality
             - test
